@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SearchForm from "./SearchForm";
-import ResultList from "./ResultList";
 import EmployeeCard from "./EmployeeCard";
 import API from "../utils/API";
 
@@ -12,7 +11,7 @@ class SearchResultContainer extends Component {
 
 
   componentDidMount() {
-    this.searchAPI("");
+    this.searchAPI("Smith");
   }
 
   searchAPI = query => {
@@ -32,7 +31,7 @@ class SearchResultContainer extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.searchGiphy(this.state.search);
+    this.searchAPI(this.state.search);
   };
 
   render() {
