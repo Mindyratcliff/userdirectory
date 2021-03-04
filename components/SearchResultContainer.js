@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SearchForm from "./SearchForm";
 import ResultList from "./ResultList";
+import EmployeeCard from "./EmployeeCard";
 import API from "../utils/API";
 
 class SearchResultContainer extends Component {
