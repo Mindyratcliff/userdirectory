@@ -1,49 +1,82 @@
-import React, { useState, useEffect } from "react";
+import { Component } from "react";
+import { render } from "react-dom";
 import API from "../utils/API";
-import SearchForm from "./SearchForm";
-import ResultList from "./ResultList";
 
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-function SearchResultContainer() {
-  const [search, setSearch] = useState("Random");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+    this.state = {
+      employees: [],
+      allEmployees: [],
+      search: ""
+    };
 
+    this.handleInputChange = this.handleInputChange.bind(this);
 
-  useEffect(() => {
-    if (!search) {
-      return;
-    }
+  }
 
+  componentDidMount(){
     API.search(search)
-      .then(res => {
-        if (res.data.length === 0) {
-          throw new Error("No results found.");
-        }
-        if (res.data.status === "error") {
-          throw new Error(res.data.message);
-        }
-        console.log(res.data);
-        setName(res.data[0]);
-        setEmail(res.data[0]);
-      })
-      .catch(err => setError(err));
-  }, [search]);
+    .then(res => {
+      if (res.data.length === 0 ){
+        throw err;
+      }
+      if (res.data.status === "error"){
+        throw err;
+      }
+      this.setState({ employees: res.data.results });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
-  const handleInputChange = event => {
-    setSearch(event.target.value);
-  };
+}
 
+handleInputChange(event){
+  event.preventDefault;
+  const target = event.target;
+  const value = target.value;
+  const name = target.name;
+
+  this.setState({
+    [name]: value
+  });
+}
+
+render() {
+  let filteredEmployees;
+
+  if (this.state.search)
+  filteredEmployees = this.state.employees.filter(filteredParam =>
+    filteredParam.name.startsWith(this.state.search));
+  
+  const emails = filteredEmployees.map(filteredParam => {
+    return <List key={filteredParam.email} name={filteredParam.name} />
+  });
   return (
     <div>
-        <SearchForm
-          handleInputChange={handleInputChange}
-          results={search}
+      <form onSubmit= {this.handleSubmit}>
+      <div className="form-group">
+        <label htmlFor="search">Search:</label>
+        <input
+          onChange={this.handleInputChange}
+          value={this.state.search}
+          name="search"
+          type="text"
+          className="form-control"
+          placeholder="Search for an Employee"
+          id="search"
         />
-        <ResultList name={name} email={email} />
+        <button onClick={this.state.search} className="btn btn-primary mt-3">
+          Search
+        </button>
+      </div>
+    </form>
+      
     </div>
-  );
+  )
 }
 
 
