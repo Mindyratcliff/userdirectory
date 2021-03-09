@@ -1,51 +1,55 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import API from "../utils/API";
 import SearchForm from "./SearchForm";
 import ResultList from "./ResultList";
-import API from "../utils/API";
 
-class SearchResultContainer extends Component {
-  state = {
-    search: "",
-    results: []
+
+function SearchResultContainer() {
+  const [search, setSearch] = useState("Random");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+
+  useEffect(() => {
+    if (!search) {
+      return;
+    }
+
+    API.search(search)
+      .then(res => {
+        if (res.data.length === 0) {
+          throw new Error("No results found.");
+        }
+        if (res.data.status === "error") {
+          throw new Error(res.data.message);
+        }
+        console.log(res.data);
+        setName(res.data[0].name);
+        setEmail(res.data[0].email);
+
+      })
+     
+  }, [search]);
+
+  const handleInputChange = event => {
+    setSearch(event.target.value);
   };
 
-
-  componentWillMount() {
-    this.searchAPI("");
-  }
-
-  searchAPI = query => {
-    API.search(query)
-      .then(res => this.setState({ results: res.data.data }))
-      .catch(err => console.log(err));
-  };
-
-  handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
-  };
-
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    this.searchAPI(this.state.search);
-  };
-
-  render() {
-    return (
-      <div>
+  return (
+    <div>
+        <h1 className="text-center">Employee Search</h1>
         <SearchForm
-          search={this.state.search}
-          handleFormSubmit={this.handleFormSubmit}
-          handleInputChange={this.handleInputChange}
+          handleInputChange={handleInputChange}
+          results={search}
         />
-        <ResultList results={this.state.results} />
-      </div>
-    );
-  }
+        <ResultList name={name} email={email} />
+    </div>
+  );
 }
 
+
 export default SearchResultContainer;
+
+
+
+ 

@@ -10,10 +10,7 @@ function ResultList(props) {
         <div className="content">
           <ul>
             <li>
-              <strong>First Name:</strong> {props.name.first}
-            </li>
-            <li>
-                <strong>Last Name:</strong> {props.name.last}
+              <strong>Name:</strong> {props.name}
             </li>
             <li>
               <strong>Email:</strong> {props.email}
