@@ -2,7 +2,7 @@ import { Component } from "react";
 import { render } from "react-dom";
 import API from "../utils/API";
 
-class App extends Component {
+class SearchResultContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -15,6 +15,7 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
 
   }
+  
 
   componentDidMount(){
     API.search(search)
@@ -32,7 +33,7 @@ class App extends Component {
     })
   }
 
-}
+};
 
 handleChange(event) {
 
@@ -43,7 +44,7 @@ handleChange(event) {
   this.setState({
     [name]: value
   });
-}
+};
 
 render() {
   let filteredEmployees;
@@ -77,7 +78,8 @@ render() {
       
     </div>
   )
-}
+
+};
 
 
 
