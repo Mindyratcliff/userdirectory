@@ -8,6 +8,7 @@ function SearchResultContainer() {
   const [search, setSearch] = useState("Random");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
 
   useEffect(() => {
@@ -24,11 +25,10 @@ function SearchResultContainer() {
           throw new Error(res.data.message);
         }
         console.log(res.data);
-        setName(res.data[0].name);
-        setEmail(res.data[0].email);
-
+        setName(res.data[0]);
+        setEmail(res.data[0]);
       })
-     
+      .catch(err => setError(err));
   }, [search]);
 
   const handleInputChange = event => {
@@ -37,7 +37,6 @@ function SearchResultContainer() {
 
   return (
     <div>
-        <h1 className="text-center">Employee Search</h1>
         <SearchForm
           handleInputChange={handleInputChange}
           results={search}
@@ -46,6 +45,7 @@ function SearchResultContainer() {
     </div>
   );
 }
+
 
 
 export default SearchResultContainer;
