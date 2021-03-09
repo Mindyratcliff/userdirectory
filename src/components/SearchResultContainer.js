@@ -12,7 +12,7 @@ class App extends Component {
       search: ""
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
   }
 
@@ -34,8 +34,8 @@ class App extends Component {
 
 }
 
-handleInputChange(event){
-  event.preventDefault;
+handleChange(event) {
+
   const target = event.target;
   const value = target.value;
   const name = target.name;
