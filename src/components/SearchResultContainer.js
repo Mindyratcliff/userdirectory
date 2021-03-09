@@ -10,8 +10,8 @@ class SearchResultContainer extends Component {
   };
 
 
-  componentDidMount() {
-    this.searchAPI("Smith");
+  componentWillMount() {
+    this.searchAPI("");
   }
 
   searchAPI = query => {
