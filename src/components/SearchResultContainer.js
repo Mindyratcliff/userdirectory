@@ -20,7 +20,7 @@ class SearchResultContainer extends Component {
   componentDidMount(){
     API.search()
     .then(res => {
-      console.log(res.data);
+      console.log(res.data.results);
       this.setState({ employees: res.data });
     })
     .catch(err => {
@@ -44,7 +44,7 @@ class SearchResultContainer extends Component {
   let filteredEmployees;
 
   if (this.state.employees.length !== 0) {
-  filteredEmployees = this.state.employees.filter(filteredParam =>
+  filteredEmployees = this.state.search.filter(filteredParam =>
     filteredParam.name.startsWith(this.state.search));
   
   const emails = filteredEmployees.map(filteredParam => {
