@@ -14,28 +14,22 @@ class SearchResultContainer extends Component {
 
     this.handleChange = this.handleChange.bind(this);
 
-  }
+  };
   
 
   componentDidMount(){
-    API.search(search)
+    API.search()
     .then(res => {
-      if (res.data.length === 0 ){
-        throw err;
-      }
-      if (res.data.status === "error"){
-        throw err;
-      }
-      this.setState({ employees: res.data.results });
+      console.log(res.data);
+      this.setState({ employees: res.data });
     })
     .catch(err => {
       console.log(err)
     })
   }
 
-};
 
-handleChange(event) {
+ handleChange = (event) => {
 
   const target = event.target;
   const value = target.value;
@@ -44,25 +38,27 @@ handleChange(event) {
   this.setState({
     [name]: value
   });
-};
+ };
 
-render() {
+ render() {
   let filteredEmployees;
 
-  if (this.state.search)
+  if (this.state.employees.length !== 0) {
   filteredEmployees = this.state.employees.filter(filteredParam =>
     filteredParam.name.startsWith(this.state.search));
   
   const emails = filteredEmployees.map(filteredParam => {
     return <List key={filteredParam.email} name={filteredParam.name} />
+  
   });
+};
   return (
     <div>
       <form onSubmit= {this.handleSubmit}>
       <div className="form-group">
         <label htmlFor="search">Search:</label>
         <input
-          onChange={this.handleInputChange}
+          onChange={this.handleChange}
           value={this.state.search}
           name="search"
           type="text"
@@ -79,12 +75,19 @@ render() {
     </div>
   )
 
+  };
 };
 
-
+class List extends Component {
+  render() {
+    return (
+      <div>
+        <h1>{this.props.name}</h1>
+        <h2>{this.props.email}</h2>
+      </div>
+    );
+  }
+}
 
 export default SearchResultContainer;
-
-
-
- 
+  
